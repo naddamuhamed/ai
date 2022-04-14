@@ -131,11 +131,43 @@ pygame.draw.line(surface,color,(350,250),(400,350),5)
 
 # fagaras
 pygame.draw.circle(surface, color, (500,250), 15)
+img = font.render("Fagaras", True, color)
+surface.blit(img, (475, 210))
+pygame.draw.line(surface,color,(500,250),(750,400),5)
 
 
 # rimnicu
 pygame.draw.circle(surface, color, (400,350), 15)
+img = font.render("Rimnicu Vilcea", True, color)
+surface.blit(img, (400, 310))
+pygame.draw.line(surface,color,(400,350),(550,400),5)
+pygame.draw.line(surface,color,(400,350),(420,600),5)
 
+# pitesti
+pygame.draw.circle(surface, color, (550,400), 15)
+img = font.render("Pitesti", True, color)
+surface.blit(img, (550, 370))
+pygame.draw.line(surface,color,(550,400),(750,400),5)
+pygame.draw.line(surface,color,(550,400),(420,600),5)
+
+# bucharest
+pygame.draw.circle(surface, color, (750,400), 15)
+img = font.render("Bucharest", True, color)
+surface.blit(img, (760, 420))
+pygame.draw.line(surface,color,(750,400),(950,350),5)
+pygame.draw.line(surface,color,(750,400),(675,500),5)
+
+# criova
+pygame.draw.circle(surface, color, (420,600), 15)
+img = font.render("Craiova", True, color)
+surface.blit(img, (410, 620))
+pygame.draw.line(surface,color,(420,600),(280,590),5)
+
+# giurgiu
+
+# dobreta
+
+# urziceni
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
