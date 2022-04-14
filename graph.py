@@ -2,6 +2,7 @@
 import lab4
 from PyQt5 import QtCore, QtGui, QtWidgets
 import pygame
+#visited=[]
 # from pygame.locals import *
 # PyQt5-Qt5, PyQt5-sip, pyqt5
 # C:\Users\Nadda\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\Scripts
@@ -54,22 +55,22 @@ straight_line ={
                         }
 
 visited=[]
-print('BFS result: ')
-print(lab4.bfs(graph, 'Zerind', 'Dobreta'))
-print('DFS result: ')
-print(lab4.dfs(graph, 'Zerind', 'Dobreta'))
+# print('BFS result: ')
+# print(lab4.bfs(graph, 'Zerind', 'Dobreta'))
+# print('DFS result: ')
+# print(lab4.dfs(graph, 'Zerind', 'Dobreta'))
 print('DFS2 result: ')
-print(lab4.dfs2(visited,graph, 'Zerind', 'Dobreta'))
-print('Uniform Cost Search result: ')
-print(lab4.ucs(graph, 'Arad', 'Dobreta'))
+print(lab4.dfs2(visited, graph, 'Zerind', 'Dobreta'))
 # print('Uniform Cost Search result: ')
-# print(lab4.ucs2(graph, 'Arad', 'Dobreta'))
-print('Greedy Best First Search result: ')
-print(lab4.GBFS(GRAPH, 'Zerind', 'Bucharest'))
+# print(lab4.ucs(graph, 'Arad', 'Dobreta'))
+# # print('Uniform Cost Search result: ')
+# # print(lab4.ucs2(graph, 'Arad', 'Dobreta'))
+# print('Greedy Best First Search result: ')
+# print(lab4.GBFS(GRAPH, 'Zerind', 'Bucharest'))
+# # print('A Star Search result: ')
+# # print(lab4.Astar(graph,straight_line, 'Zerind', 'Bucharest'))
 # print('A Star Search result: ')
-# print(lab4.Astar(graph,straight_line, 'Zerind', 'Bucharest'))
-print('A Star Search result: ')
-print(lab4.astar(graph,straight_line, 'Arad', 'Bucharest'))
+# print(lab4.astar(graph,straight_line, 'Arad', 'Bucharest'))
 
  
 # initiate pygame and give permission
@@ -211,20 +212,40 @@ class Ui_MainWindow(object):
     
     def find(self):
         contentRadio = ""
-        if self.radioButton.isChecked():
-            contentRadio = self.radioButton.text()
-        elif self.radioButton_2.isChecked():
-            contentRadio = self.radioButton_2.text()
-        elif self.radioButton_3.isChecked():
-            contentRadio = self.radioButton_3.text()
-        elif self.radioButton_4.isChecked():
-            contentRadio = self.radioButton_4.text()
-        elif self.radioButton_5.isChecked():
-            contentRadio = self.radioButton_5.text()
+        
 
         # finding the content of current item in combo box
         contentCombo_1 = self.comboBox.currentText()
         contentCombo_2 = self.comboBox_2.currentText()
+
+        if self.radioButton.isChecked():
+            contentRadio = self.radioButton.text()
+            print('BFS result: ')
+            print(lab4.bfs(graph, contentCombo_1, contentCombo_2))
+
+        elif self.radioButton_2.isChecked():
+            visited=[]
+            contentRadio = self.radioButton_2.text()
+            print('DFS2 result: ')
+            #print(lab4.dfs2(visited, graph, contentCombo_1, contentCombo_2))
+            print(lab4.dfs2(visited, graph, 'Zerind', 'Dobreta'))
+            #print(lab4.dfs2(visited, graph, 'Zerind', 'Doberta'))
+
+        elif self.radioButton_3.isChecked():
+            contentRadio = self.radioButton_3.text()
+            print('Uniform Cost Search result: ')
+            print(lab4.ucs(graph, contentCombo_1, contentCombo_2))
+
+        elif self.radioButton_4.isChecked():
+            contentRadio = self.radioButton_4.text()
+            print('Greedy Best First Search result: ')
+            print(lab4.GBFS(GRAPH, contentCombo_1, contentCombo_2))
+
+        elif self.radioButton_5.isChecked():
+            contentRadio = self.radioButton_5.text()
+            print('A Star Search result: ')
+            print(lab4.astar(graph,straight_line, contentCombo_1, contentCombo_2))
+
         # showing content on the screen though label
         print(contentCombo_1)
         print(contentCombo_2)
