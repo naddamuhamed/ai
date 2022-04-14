@@ -85,7 +85,7 @@ font = pygame.font.SysFont(None, 30)
 # arad
 pygame.draw.circle(surface, color, (150,150), 15)
 img = font.render("Arad", True, color)
-surface.blit(img, (100, 165))
+surface.blit(img, (100, 167))
 img = font.render("75", True, color)
 surface.blit(img, (200, 140))
 img = font.render("366", True, color)
@@ -105,7 +105,7 @@ pygame.draw.line(surface,color,(250,100),(300,50),5)
 # oradea
 pygame.draw.circle(surface, color, (300,50), 15)
 img = font.render("Oradea", True, color)
-surface.blit(img, (325, 50))
+surface.blit(img, (322, 45))
 img = font.render("151", True, color)
 surface.blit(img, (330, 140))
 img = font.render("380", True, color)
@@ -120,7 +120,7 @@ surface.blit(img, (365, 220))
 img = font.render("140", True, color)
 surface.blit(img, (235, 215))
 img = font.render("253", True, color)
-surface.blit(img, (350, 202))
+surface.blit(img, (350, 198))
 img = font.render("99", True, color)
 surface.blit(img, (410, 255))
 img = font.render("80", True, color)
@@ -182,8 +182,6 @@ img = font.render("75", True, color)
 surface.blit(img, (250, 530))
 pygame.draw.line(surface,color,(280,590),(280,490),5)
 
-# urziceni
-
 # mehadia
 pygame.draw.circle(surface, color, (280,490), 15)
 img = font.render("Mehadia", True, color)
@@ -213,6 +211,41 @@ surface.blit(img, (205, 280))
 img = font.render("118", True, color)
 surface.blit(img, (120, 225))
 pygame.draw.line(surface,color,(180,290),(150,150),5)
+
+# urziceni
+pygame.draw.circle(surface, color, (950,350), 15)
+img = font.render("Urziceni", True, color)
+surface.blit(img, (900, 370))
+pygame.draw.line(surface,color,(950,350),(1100,350),5)
+pygame.draw.line(surface,color,(950,350),(1025,200),5)
+
+# hirsova
+pygame.draw.circle(surface, color, (1100,350), 15)
+img = font.render("Hirsova", True, color)
+surface.blit(img, (1125, 350))
+pygame.draw.line(surface,color,(1100,350),(1150,500),5)
+
+# eforie
+pygame.draw.circle(surface, color, (1150,500), 15)
+img = font.render("Eforie", True, color)
+surface.blit(img, (1150, 520))
+
+# vaslui
+pygame.draw.circle(surface, color, (1025,200), 15)
+img = font.render("Vaslui", True, color)
+surface.blit(img, (1050, 190))
+pygame.draw.line(surface,color,(1025,200),(950,100),5)
+
+# iasi
+pygame.draw.circle(surface, color, (950,100), 15)
+img = font.render("Iasi", True, color)
+surface.blit(img, (975, 90))
+pygame.draw.line(surface,color,(950,100),(850,70),5)
+
+# neamt
+pygame.draw.circle(surface, color, (850,70), 15)
+img = font.render("Neamt", True, color)
+surface.blit(img, (800, 85))
 
 while True:
     for event in pygame.event.get():
