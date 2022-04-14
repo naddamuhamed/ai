@@ -176,6 +176,10 @@ surface.blit(img, (675, 520))
 pygame.draw.circle(surface, color, (280,590), 15)
 img = font.render("Dobreta", True, color)
 surface.blit(img, (210, 610))
+img = font.render("242", True, color)
+surface.blit(img, (225, 582))
+img = font.render("75", True, color)
+surface.blit(img, (250, 530))
 pygame.draw.line(surface,color,(280,590),(280,490),5)
 
 # urziceni
@@ -184,18 +188,30 @@ pygame.draw.line(surface,color,(280,590),(280,490),5)
 pygame.draw.circle(surface, color, (280,490), 15)
 img = font.render("Mehadia", True, color)
 surface.blit(img, (180, 490))
+img = font.render("241", True, color)
+surface.blit(img, (300, 480))
+img = font.render("70", True, color)
+surface.blit(img, (250, 430))
 pygame.draw.line(surface,color,(280,490),(280,390),5)
 
 # lugoj
 pygame.draw.circle(surface, color, (280,390), 15)
 img = font.render("Lugoj", True, color)
 surface.blit(img, (200, 390))
+img = font.render("244", True, color)
+surface.blit(img, (298, 380))
+img = font.render("111", True, color)
+surface.blit(img, (200, 352))
 pygame.draw.line(surface,color,(280,390),(180,290),5)
 
 # timisoara
 pygame.draw.circle(surface, color, (180,290), 15)
 img = font.render("Timisoara", True, color)
 surface.blit(img, (60, 290))
+img = font.render("329", True, color)
+surface.blit(img, (205, 280))
+img = font.render("118", True, color)
+surface.blit(img, (120, 225))
 pygame.draw.line(surface,color,(180,290),(150,150),5)
 
 while True:
