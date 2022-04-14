@@ -133,6 +133,8 @@ pygame.draw.line(surface,color,(350,250),(400,350),5)
 pygame.draw.circle(surface, color, (500,250), 15)
 img = font.render("Fagaras", True, color)
 surface.blit(img, (475, 210))
+img = font.render("176", True, color)
+surface.blit(img, (480, 187))
 pygame.draw.line(surface,color,(500,250),(750,400),5)
 
 
@@ -140,6 +142,8 @@ pygame.draw.line(surface,color,(500,250),(750,400),5)
 pygame.draw.circle(surface, color, (400,350), 15)
 img = font.render("Rimnicu Vilcea", True, color)
 surface.blit(img, (400, 310))
+img = font.render("193", True, color)
+surface.blit(img, (342, 343))
 pygame.draw.line(surface,color,(400,350),(550,400),5)
 pygame.draw.line(surface,color,(400,350),(420,600),5)
 
