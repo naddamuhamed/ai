@@ -85,11 +85,7 @@ font = pygame.font.SysFont(None, 30)
 # arad
 pygame.draw.circle(surface, color, (150,150), 15)
 img = font.render("Arad", True, color)
-<<<<<<< Updated upstream
-surface.blit(img, (133, 167))
-=======
 surface.blit(img, (100, 165))
->>>>>>> Stashed changes
 img = font.render("75", True, color)
 surface.blit(img, (200, 140))
 img = font.render("366", True, color)
