@@ -85,7 +85,7 @@ font = pygame.font.SysFont(None, 30)
 # arad
 pygame.draw.circle(surface, color, (150,150), 15)
 img = font.render("Arad", True, color)
-surface.blit(img, (133, 167))
+surface.blit(img, (100, 165))
 img = font.render("75", True, color)
 surface.blit(img, (200, 140))
 img = font.render("366", True, color)
@@ -168,10 +168,36 @@ surface.blit(img, (410, 620))
 pygame.draw.line(surface,color,(420,600),(280,590),5)
 
 # giurgiu
+pygame.draw.circle(surface, color, (675,500), 15)
+img = font.render("Giurgiu", True, color)
+surface.blit(img, (675, 520))
 
 # dobreta
+pygame.draw.circle(surface, color, (280,590), 15)
+img = font.render("Dobreta", True, color)
+surface.blit(img, (210, 610))
+pygame.draw.line(surface,color,(280,590),(280,490),5)
 
 # urziceni
+
+# mehadia
+pygame.draw.circle(surface, color, (280,490), 15)
+img = font.render("Mehadia", True, color)
+surface.blit(img, (180, 490))
+pygame.draw.line(surface,color,(280,490),(280,390),5)
+
+# lugoj
+pygame.draw.circle(surface, color, (280,390), 15)
+img = font.render("Lugoj", True, color)
+surface.blit(img, (200, 390))
+pygame.draw.line(surface,color,(280,390),(180,290),5)
+
+# timisoara
+pygame.draw.circle(surface, color, (180,290), 15)
+img = font.render("Timisoara", True, color)
+surface.blit(img, (60, 290))
+pygame.draw.line(surface,color,(180,290),(150,150),5)
+
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
