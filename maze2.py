@@ -34,7 +34,7 @@ class AnotherWindow(QWidget):
         self.label_1.setGeometry(QtCore.QRect(165, 40, 191, 31))
         self.label_1.setFont(font)
         self.label_1.setObjectName("label_1")
-        self.label_1.setText("Cost: "+Game.Cost)
+        self.label_1.setText("Cost: "+str(Game.Cost))
         self.label_2 = QLabel()
         self.label_2.setGeometry(QtCore.QRect(165, 40, 191, 31))
         self.label_2.setFont(font)
@@ -184,6 +184,9 @@ class Root():
     def children(self):
         return self.child
 
+    def parents(self):
+        return self.parent
+
 
 class Game():
     Cost = 0
@@ -208,9 +211,6 @@ class Game():
         for i in range(21):
             pg.draw.line(self.canvas, "#ffffff", (i * 20, 0), (i * 20, 400), 2)
             pg.draw.line(self.canvas, "#ffffff", (0, i*20), (400, i*20), 2)
-
-    # def setAlgorithm(self):
-    #     self.algorithm = 'a7a'
 
 
     def drawloop(self):
@@ -279,7 +279,7 @@ class Game():
             toStart = self.find_solution(self.maze, start, "0")
             toEnd = self.find_solution(self.maze, end, "0")
             t2 = time.time()
-            Game.Time = str((t2-t1)*1000)
+            Game.Time = str((t2-t1)*10000000)
             print(Game.algorithm)
 
         elif Game.algorithm == "BFS":
@@ -302,21 +302,23 @@ class Game():
             t2 = time.time()
             Game.Time = str((t2-t1)*1000)
             cost=abs(cost1-cost2)
-            Game.Cost = str(cost)
+            Game.Cost = cost
             #Time = Timer(setup, code).timeit()
             print(Game.algorithm)
 
         elif Game.algorithm == "GBFS":
             print(Game.algorithm)
             t1 = time.time()
-
+            toStart = self.GBFS(self.maze, start, "0")
+            toEnd= self.GBFS(self.maze, end, "0")
             t2 = time.time()
             Game.Time = str((t2-t1)*1000)
 
         elif Game.algorithm == "A*":
             print(Game.algorithm)
             t1 = time.time()
-
+            toStart = self.astar(self.maze, start, "0")
+            toEnd= self.astar(self.maze, end, "0")
             t2 = time.time()
             Game.Time = str((t2-t1)*1000)
 
