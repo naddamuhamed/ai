@@ -6,6 +6,39 @@ import sys
 
 # from lab4 import bfs
 
+class Ui_OutWindow(object):
+    def setupUi(self, outWindow):
+        outWindow.setObjectName("MainWindow")
+        outWindow.resize(477, 231)
+        self.centralwidget = QtWidgets.QWidget(outWindow)
+        self.centralwidget.setObjectName("centralwidget")
+
+        #Label
+        self.label = QtWidgets.QLabel(self.centralwidget)
+        self.label.setGeometry(QtCore.QRect(165, 40, 191, 31))
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.label.setFont(font)
+        self.label.setObjectName("label")
+        self.label.setText("Please choose an algorithm:")
+
+        outWindow.setCentralWidget(self.centralwidget)
+        self.menubar = QtWidgets.QMenuBar(outWindow)
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 477, 21))
+        self.menubar.setObjectName("menubar")
+        outWindow.setMenuBar(self.menubar)
+        self.statusbar = QtWidgets.QStatusBar(outWindow)
+        self.statusbar.setObjectName("statusbar")
+        outWindow.setStatusBar(self.statusbar)
+
+        self.retranslateUi(outWindow)
+        QtCore.QMetaObject.connectSlotsByName(outWindow)
+
+    def retranslateUi(self, outWindow):
+        _translate = QtCore.QCoreApplication.translate
+        outWindow.setWindowTitle(_translate("OutPut", "OutPut"))
+    
+
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -43,6 +76,7 @@ class Ui_MainWindow(object):
         self.button.setFont(font)
         self.button.setObjectName("button")
         self.button.pressed.connect(self.find)
+
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 477, 21))
@@ -73,6 +107,7 @@ class Ui_MainWindow(object):
         game = Game(screen)
         game.algorithm = contentCombo
         game.main_loop()
+        game.output()
 
 class Root():
     def __init__(self, value, cost, parent = None):
@@ -135,6 +170,7 @@ class Game():
             self.clock.tick(60)
             for eve in pg.event.get():
                 if eve.type == pg.QUIT:
+                    #self.output()
                     self.running = False
                 if eve.type == pg.MOUSEBUTTONDOWN:
                     pos = self.cursor_grid(eve.pos[0], eve.pos[1])
@@ -322,6 +358,8 @@ class Game():
                     temp=n[1][:]
                     temp.append(child.value)
                     q.put((cost+child.cost,temp))
+        #self.output(self)
+
     def solve_maze(self):
         if not self.ismaze:
             return
@@ -337,16 +375,33 @@ class Game():
             pg.draw.line(self.solveCan, "#ffffff", ((s%20) * 20 + 10, (s//20) * 20 + 10),
                          ((e%20) * 20 + 10, (e//20) * 20 + 10), 1)
 
+    def output(self):
+        appout = QtWidgets.QApplication(sys.argv)
+        outputWindow = QtWidgets.QMainWindow()
+        outui = Ui_OutWindow()
+        outui.setupUi(outputWindow)
+        outputWindow.show()
+        sys.exit(appout.exec_())
 
 
-# pg.init()
-# screen = pg.display.set_mode((402, 402))
-# pg.display.set_caption("maze Generator")
-# game = Game(screen)
-# game.main_loop()
+
+
+# # pg.init()
+# # screen = pg.display.set_mode((402, 402))
+# # pg.display.set_caption("maze Generator")
+# # game = Game(screen)
+# # game.main_loop()
 app = QtWidgets.QApplication(sys.argv)
 MainWindow = QtWidgets.QMainWindow()
 ui = Ui_MainWindow()
 ui.setupUi(MainWindow)
 MainWindow.show()
 sys.exit(app.exec_())
+
+
+# appout = QtWidgets.QApplication(sys.argv)
+# outputWindow = QtWidgets.QMainWindow()
+# outui = Ui_OutWindow()
+# outui.setupUi(outputWindow)
+# outputWindow.show()
+# sys.exit(appout.exec_())
