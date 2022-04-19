@@ -127,7 +127,7 @@ class Ui_MainWindow(object):
         self.button.setFont(font)
         self.button.setObjectName("button")
         self.button.pressed.connect(self.find)
-        self.button.setStyleSheet("background-color:rgb(143,66,136)")
+        self.button.setStyleSheet("background-color:rgb(116,77,169)")
         #self.button.setStyleSheet("background-color:purple")
 
         MainWindow.setCentralWidget(self.centralwidget)
@@ -499,6 +499,7 @@ class Game():
                     v.append(child.value)
                     c.append(child.children())
                     priorityQueue.put((self.heuristic(child,endpoint), child.value))
+                    
     def astar(self,root,endpoint, path):
         p_q,visited=Q.PriorityQueue(),[]
         p_q.put((self.heuristic(root,endpoint),0,root.value,[root.value]))
