@@ -127,7 +127,7 @@ class Ui_MainWindow(object):
         self.button.setFont(font)
         self.button.setObjectName("button")
         self.button.pressed.connect(self.find)
-        self.button.setStyleSheet("background-color:rgb(146,53,213)")
+        self.button.setStyleSheet("background-color:rgb(156,63,223)")
         #self.button.setStyleSheet("background-color:purple")
 
         MainWindow.setCentralWidget(self.centralwidget)
