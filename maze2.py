@@ -3,8 +3,10 @@ import random
 import queue as Q
 from PyQt5 import QtCore, QtGui, QtWidgets
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QLabel, QVBoxLayout, QWidget
+from PyQt5.QtGui import QColor
+from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QLabel, QVBoxLayout, QWidget, QLineEdit, QTextBrowser
 from random import randint
+import time
 
 # from lab4 import bfs
 class AnotherWindow(QWidget):
@@ -13,19 +15,45 @@ class AnotherWindow(QWidget):
     will appear as a free-floating window as we want.
     """
     def __init__(self):
+        x = "test"
         super().__init__()
         layout = QVBoxLayout()
-        self.label = QLabel("Another Window % d" % randint(0,100))
+        self.resize(600,400)
+        self.setStyleSheet("background-color:rgb(181,126,220)")
+        #self.label = QLabel("Another Window % d" % randint(0,100))
+        #self.label_1 = QLabel("Another Window % d" % randint(0,100))
         # self.label = QtWidgets.QLabel(self.centralwidget)
+        self.label = QLabel()
+        self.label_1 = QLabel()
         self.label.setGeometry(QtCore.QRect(165, 40, 191, 31))
         font = QtGui.QFont()
         font.setPointSize(10)
         self.label.setFont(font)
         self.label.setObjectName("label")
-        self.label.setText("Please choose an algorithm:")
+        self.label.setText("Path: "+str(Game.Path))
+        self.label_1.setGeometry(QtCore.QRect(165, 40, 191, 31))
+        self.label_1.setFont(font)
+        self.label_1.setObjectName("label_1")
+        self.label_1.setText("Cost: "+Game.Cost)
+        self.label_2 = QLabel()
+        self.label_2.setGeometry(QtCore.QRect(165, 40, 191, 31))
+        self.label_2.setFont(font)
+        self.label_2.setObjectName("labe_2")
+        self.label_2.setText("Time: "+Game.Time+"Ms")
+        # self.label_1.move(60,-20)
+        # self.box = QTextBrowser(self)
+        # self.box.setText(str(Game.Path))
+        # self.textbox = QLineEdit(self)
+        # self.textbox.move(20, 20)
+        # self.textbox.resize(400,280)
+        # self.textbox.setText(str(Game.Path))
         
-        
+        # self.box.setWordWrapMode(True)
+        # self.box.setLineWrapMode(True)
         layout.addWidget(self.label)
+        layout.addWidget(self.label_1)
+        layout.addWidget(self.label_2)
+        # layout.addWidget(self.box)
         self.setLayout(layout)
 
 class Ui_OutWindow(object):
@@ -65,6 +93,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(477, 231)
+        MainWindow.setStyleSheet("background-color:rgb(181,126,220)")
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
 
@@ -98,6 +127,8 @@ class Ui_MainWindow(object):
         self.button.setFont(font)
         self.button.setObjectName("button")
         self.button.pressed.connect(self.find)
+        self.button.setStyleSheet("background-color:rgb(146,53,213)")
+        #self.button.setStyleSheet("background-color:purple")
 
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
@@ -127,7 +158,7 @@ class Ui_MainWindow(object):
         screen = pg.display.set_mode((402, 402))
         pg.display.set_caption("maze Generator")
         game = Game(screen)
-        game.algorithm = contentCombo    
+        Game.algorithm = contentCombo    
         game.main_loop()
         # game.output()
         self.w = None
@@ -155,7 +186,10 @@ class Root():
 
 
 class Game():
-    algorithm = ""
+    Cost = 0
+    Path = []
+    Time = 0
+    algorithm = "test_1"
     ismaze = False
     endPoint = 399
     rows, cols = 20, 20
@@ -240,23 +274,51 @@ class Game():
     def find_path(self, start, end):
         if not self.ismaze:
             return
-        if self.algorithm == "DFS":
+        if Game.algorithm == "DFS":
+            t1 = time.time()
             toStart = self.find_solution(self.maze, start, "0")
             toEnd = self.find_solution(self.maze, end, "0")
+            t2 = time.time()
+            Game.Time = str((t2-t1)*1000)
+            print(Game.algorithm)
 
-        elif self.algorithm == "BFS":
+        elif Game.algorithm == "BFS":
+            t1 = time.time()
             toStart = self.bfs(self.maze, start, "0")
             toEnd = self.bfs(self.maze, end, "0")
+            t2 = time.time()
+            Game.Time = str((t2-t1)*1000)
+            print(Game.algorithm)
 
-        elif self.algorithm == "UCS":
-            toStart = self.ucs(self.maze, start, "0")
-            toEnd = self.ucs(self.maze, end, "0")
+        elif Game.algorithm == "UCS":
+            # setup ='''
+            # '''
+            # code= '''
+            # toStart,cost1 = self.ucs(self.maze, start, "0")
+            # toEnd,cost2 = self.ucs(self.maze, end, "0")'''
+            t1 = time.time()
+            toStart,cost1 = self.ucs(self.maze, start, "0")
+            toEnd,cost2 = self.ucs(self.maze, end, "0")
+            t2 = time.time()
+            Game.Time = str((t2-t1)*1000)
+            cost=abs(cost1-cost2)
+            Game.Cost = str(cost)
+            #Time = Timer(setup, code).timeit()
+            print(Game.algorithm)
 
-        elif self.algorithm == "GBFS":
-            pass
+        elif Game.algorithm == "GBFS":
+            print(Game.algorithm)
+            t1 = time.time()
 
-        elif self.algorithm == "A*":
-            pass
+            t2 = time.time()
+            Game.Time = str((t2-t1)*1000)
+
+        elif Game.algorithm == "A*":
+            print(Game.algorithm)
+            t1 = time.time()
+
+            t2 = time.time()
+            Game.Time = str((t2-t1)*1000)
 
         if toStart is False or toEnd is False:
             return
@@ -276,6 +338,8 @@ class Game():
             path.append(toEnd[ii])
             ii += 1
         self.solveCan = pg.Surface((402, 402), pg.SRCALPHA)
+
+        Game.Path = path
         for ind in path:
             pg.draw.circle(self.solveCan, "#ffffff", ((int(ind)%20) * 20 + 10, (int(ind)//20) * 20 + 10), 3)
         # for i in range(len(path)-1):
@@ -370,7 +434,7 @@ class Game():
             
             if endpoint in n[1]:
                 # return n[1],n[0]
-                return path
+                return path,n[0]
                 # print("path: "+str(n[1])+" cost: "+str(n[0]))
                 # break
             for i in c:
