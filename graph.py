@@ -56,17 +56,17 @@ straight_line ={
 
 visited=[]
 # print('BFS result: ')
-# print(lab4.bfs(graph, 'Zerind', 'Dobreta'))
+# print(lab4.bfs(graph, 'Arad', 'Bucharest'))
 # print('DFS result: ')
-# print(lab4.dfs(graph, 'Zerind', 'Dobreta'))
-print('DFS2 result: ')
-print(lab4.dfs2(visited, graph, 'Zerind', 'Dobreta'))
+# print(lab4.dfs(graph, 'Arad', 'Bucharest'))
+# # print('DFS2 result: ')
+# # print(lab4.dfs2(visited, graph, 'Arad', 'Bucharest'))
 # print('Uniform Cost Search result: ')
-# print(lab4.ucs(graph, 'Arad', 'Dobreta'))
+# print(lab4.ucs(graph, 'Arad', 'Bucharest'))
 # # print('Uniform Cost Search result: ')
 # # print(lab4.ucs2(graph, 'Arad', 'Dobreta'))
 # print('Greedy Best First Search result: ')
-# print(lab4.GBFS(GRAPH, 'Zerind', 'Bucharest'))
+# print(lab4.GBFS(GRAPH, 'Arad', 'Bucharest'))
 # # print('A Star Search result: ')
 # # print(lab4.Astar(graph,straight_line, 'Zerind', 'Bucharest'))
 # print('A Star Search result: ')
@@ -221,30 +221,33 @@ class Ui_MainWindow(object):
         if self.radioButton.isChecked():
             contentRadio = self.radioButton.text()
             print('BFS result: ')
-            print(lab4.bfs(graph, contentCombo_1, contentCombo_2))
+            path=lab4.bfs(graph, contentCombo_1, contentCombo_2)
+            print(path)
 
         elif self.radioButton_2.isChecked():
-            visited=[]
             contentRadio = self.radioButton_2.text()
-            print('DFS2 result: ')
-            #print(lab4.dfs2(visited, graph, contentCombo_1, contentCombo_2))
-            print(lab4.dfs2(visited, graph, 'Zerind', 'Dobreta'))
-            #print(lab4.dfs2(visited, graph, 'Zerind', 'Doberta'))
+            print('DFS result: ')
+            path=lab4.dfs(graph, contentCombo_1, contentCombo_2)
+            print(path)
+            
 
         elif self.radioButton_3.isChecked():
             contentRadio = self.radioButton_3.text()
             print('Uniform Cost Search result: ')
-            print(lab4.ucs(graph, contentCombo_1, contentCombo_2))
+            path,cost=lab4.ucs(graph, contentCombo_1, contentCombo_2)
+            print(path,cost)
 
         elif self.radioButton_4.isChecked():
             contentRadio = self.radioButton_4.text()
             print('Greedy Best First Search result: ')
-            print(lab4.GBFS(GRAPH, contentCombo_1, contentCombo_2))
+            path=lab4.GBFS(GRAPH, contentCombo_1, contentCombo_2)
+            print(path)
 
         elif self.radioButton_5.isChecked():
             contentRadio = self.radioButton_5.text()
             print('A Star Search result: ')
-            print(lab4.astar(graph,straight_line, contentCombo_1, contentCombo_2))
+            cost,path=lab4.astar(graph,straight_line, contentCombo_1, contentCombo_2)
+            print(path,cost)
 
         # showing content on the screen though label
         print(contentCombo_1)

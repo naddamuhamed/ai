@@ -7,12 +7,13 @@ def bfs(graph,snode,goal):
     q.append(snode)
 
     while q:
-        if q[0] is goal:
-            return v
+        # if q[0] is goal:
+        #     return v
         ver=q.pop(0)
-
-        if ver not in v:
-            v.append(ver)
+        if ver == goal:
+            return v
+        # if ver not in v:
+        #     v.append(ver)
 
 
 
@@ -23,7 +24,7 @@ def bfs(graph,snode,goal):
             #  break
         # else: q.pop()
 
-    return v
+    # return v
 def dfs(graph,snode,goal):
     v = []
     q = []
@@ -31,10 +32,10 @@ def dfs(graph,snode,goal):
     q.append(snode)
 
     while q:
-        if q[len(q)-1] is goal:
-            return v
+        
         ver = q.pop()
-
+        if ver == goal:
+            return v
         # if ver not in v:
         #     v.append(ver)
 
@@ -42,6 +43,7 @@ def dfs(graph,snode,goal):
             if child not in v:
                 v.append(child)
                 q.append(child)
+                break
 
     return v
 def dfs2( visited,graph, node,goal):
@@ -52,6 +54,7 @@ def dfs2( visited,graph, node,goal):
         visited.append(node)
         if visited[len(visited)-1] is goal:
             print(visited) 
+            return
         for neighbour in graph[node]:
             dfs2(visited, graph, neighbour,goal)
     
@@ -64,8 +67,9 @@ def ucs(graph,snode,goal):
         n=q.get()
         curr=n[1][len(n[1])-1]
         if goal in n[1]:
-            print("path: "+str(n[1])+" cost: "+str(n[0]))
-            break
+            return n[1],n[0]
+            # print("path: "+str(n[1])+" cost: "+str(n[0]))
+            # break
         cost=n[0]
         for child in graph[curr]:
             if child not in v:
@@ -115,7 +119,7 @@ def GBFS(graph, startNode, goalNode):
         path.append(current)
 
         if current == goalNode:
-            print("goal reached")
+            # print("goal reached")
             break
 
         # priorityQueue = Q.PriorityQueue()
