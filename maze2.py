@@ -1,8 +1,78 @@
 import pygame as pg
 import random
 import queue as Q
+from PyQt5 import QtCore, QtGui, QtWidgets
+import sys
 
 # from lab4 import bfs
+
+class Ui_MainWindow(object):
+    def setupUi(self, MainWindow):
+        MainWindow.setObjectName("MainWindow")
+        MainWindow.resize(477, 231)
+        self.centralwidget = QtWidgets.QWidget(MainWindow)
+        self.centralwidget.setObjectName("centralwidget")
+
+        #Label
+        self.label = QtWidgets.QLabel(self.centralwidget)
+        self.label.setGeometry(QtCore.QRect(165, 40, 191, 31))
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.label.setFont(font)
+        self.label.setObjectName("label")
+        self.label.setText("Please choose an algorithm:")
+
+        #Combo Box List
+        comboList = ["BFS", "DFS", "UCS", "GBFS", "A*"]
+
+        #Combo Box
+        self.comboBox = QtWidgets.QComboBox(self.centralwidget)
+        self.comboBox.setGeometry(QtCore.QRect(140, 70, 211, 22))
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.comboBox.setFont(font)
+        self.comboBox.setCurrentText("")
+        self.comboBox.setObjectName("comboBox")
+        self.comboBox.addItems(comboList)
+
+        #Button
+        self.button = QtWidgets.QPushButton(self.centralwidget)
+        self.button.setGeometry(QtCore.QRect(160, 132, 171, 41))
+        font = QtGui.QFont()
+        font.setPointSize(16)
+        self.button.setFont(font)
+        self.button.setObjectName("button")
+        self.button.pressed.connect(self.find)
+        MainWindow.setCentralWidget(self.centralwidget)
+        self.menubar = QtWidgets.QMenuBar(MainWindow)
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 477, 21))
+        self.menubar.setObjectName("menubar")
+        MainWindow.setMenuBar(self.menubar)
+        self.statusbar = QtWidgets.QStatusBar(MainWindow)
+        self.statusbar.setObjectName("statusbar")
+        MainWindow.setStatusBar(self.statusbar)
+
+        self.retranslateUi(MainWindow)
+        QtCore.QMetaObject.connectSlotsByName(MainWindow)
+
+    def retranslateUi(self, MainWindow):
+        _translate = QtCore.QCoreApplication.translate
+        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        self.comboBox.setPlaceholderText(_translate("MainWindow", "Choose algorithm"))
+        self.button.setText(_translate("MainWindow", "Start"))
+
+    def find(self):
+
+        # finding the content of current item in combo box
+        contentCombo = self.comboBox.currentText()
+        # showing content on the screen though label
+        print(contentCombo)
+        pg.init()
+        screen = pg.display.set_mode((402, 402))
+        pg.display.set_caption("maze Generator")
+        game = Game(screen)
+        game.algorithm = contentCombo
+        game.main_loop()
 
 class Root():
     def __init__(self, value, cost, parent = None):
@@ -22,6 +92,7 @@ class Root():
 
 
 class Game():
+    algorithm = ""
     ismaze = False
     endPoint = 399
     rows, cols = 20, 20
@@ -40,6 +111,10 @@ class Game():
         for i in range(21):
             pg.draw.line(self.canvas, "#ffffff", (i * 20, 0), (i * 20, 400), 2)
             pg.draw.line(self.canvas, "#ffffff", (0, i*20), (400, i*20), 2)
+
+    def setAlgorithm(self):
+        self.algorithm = 'a7a'
+
 
     def drawloop(self):
         self.screen.fill("#200000")
@@ -100,12 +175,23 @@ class Game():
     def find_path(self, start, end):
         if not self.ismaze:
             return
-        # toStart = self.find_solution(self.maze, start, "0")
-        # toEnd = self.find_solution(self.maze, end, "0")
-        # toStart = self.bfs(self.maze, start, "0")
-        # toEnd = self.bfs(self.maze, end, "0")
-        toStart = self.ucs(self.maze, start, "0")
-        toEnd = self.ucs(self.maze, end, "0")
+        if self.algorithm == "DFS":
+            toStart = self.find_solution(self.maze, start, "0")
+            toEnd = self.find_solution(self.maze, end, "0")
+
+        elif self.algorithm == "BFS":
+            toStart = self.bfs(self.maze, start, "0")
+            toEnd = self.bfs(self.maze, end, "0")
+
+        elif self.algorithm == "UCS":
+            toStart = self.ucs(self.maze, start, "0")
+            toEnd = self.ucs(self.maze, end, "0")
+
+        elif self.algorithm == "GBFS":
+            pass
+
+        elif self.algorithm == "A*":
+            pass
 
         if toStart is False or toEnd is False:
             return
@@ -253,8 +339,14 @@ class Game():
 
 
 
-pg.init()
-screen = pg.display.set_mode((402, 402))
-pg.display.set_caption("maze Generator")
-game = Game(screen)
-game.main_loop()
+# pg.init()
+# screen = pg.display.set_mode((402, 402))
+# pg.display.set_caption("maze Generator")
+# game = Game(screen)
+# game.main_loop()
+app = QtWidgets.QApplication(sys.argv)
+MainWindow = QtWidgets.QMainWindow()
+ui = Ui_MainWindow()
+ui.setupUi(MainWindow)
+MainWindow.show()
+sys.exit(app.exec_())
