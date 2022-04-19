@@ -16,6 +16,7 @@ class AnotherWindow(QWidget):
     """
     def __init__(self):
         x = "test"
+        #app1 = QtWidgets.QApplication(sys.argv)
         super().__init__()
         layout = QVBoxLayout()
         self.resize(600,400)
@@ -38,8 +39,14 @@ class AnotherWindow(QWidget):
         self.label_2 = QLabel()
         self.label_2.setGeometry(QtCore.QRect(165, 40, 191, 31))
         self.label_2.setFont(font)
-        self.label_2.setObjectName("labe_2")
+        self.label_2.setObjectName("label_2")
         self.label_2.setText("Time: "+Game.Time+"Ms")
+        self.button = QPushButton()
+        self.button.setGeometry(QtCore.QRect(165, 40, 191, 31))
+        self.button.setObjectName("button")
+        self.button.setText("Quit")
+        self.button.setStyleSheet("background-color:rgb(116,77,169)")
+        self.button.pressed.connect(self.exit)
         # self.label_1.move(60,-20)
         # self.box = QTextBrowser(self)
         # self.box.setText(str(Game.Path))
@@ -47,14 +54,16 @@ class AnotherWindow(QWidget):
         # self.textbox.move(20, 20)
         # self.textbox.resize(400,280)
         # self.textbox.setText(str(Game.Path))
-        
         # self.box.setWordWrapMode(True)
         # self.box.setLineWrapMode(True)
         layout.addWidget(self.label)
         layout.addWidget(self.label_1)
         layout.addWidget(self.label_2)
+        layout.addWidget(self.button)
         # layout.addWidget(self.box)
         self.setLayout(layout)
+    def exit(self):
+        sys.exit()
 
 class Ui_OutWindow(object):
     def setupUi(self, outWindow):
