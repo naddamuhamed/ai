@@ -3,12 +3,34 @@ import random
 import queue as Q
 from PyQt5 import QtCore, QtGui, QtWidgets
 import sys
+from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QLabel, QVBoxLayout, QWidget
+from random import randint
 
 # from lab4 import bfs
+class AnotherWindow(QWidget):
+    """
+    This "window" is a QWidget. If it has no parent, it
+    will appear as a free-floating window as we want.
+    """
+    def __init__(self):
+        super().__init__()
+        layout = QVBoxLayout()
+        self.label = QLabel("Another Window % d" % randint(0,100))
+        # self.label = QtWidgets.QLabel(self.centralwidget)
+        self.label.setGeometry(QtCore.QRect(165, 40, 191, 31))
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.label.setFont(font)
+        self.label.setObjectName("label")
+        self.label.setText("Please choose an algorithm:")
+        
+        
+        layout.addWidget(self.label)
+        self.setLayout(layout)
 
 class Ui_OutWindow(object):
     def setupUi(self, outWindow):
-        outWindow.setObjectName("MainWindow")
+        outWindow.setObjectName("outWindow")
         outWindow.resize(477, 231)
         self.centralwidget = QtWidgets.QWidget(outWindow)
         self.centralwidget.setObjectName("centralwidget")
@@ -105,9 +127,15 @@ class Ui_MainWindow(object):
         screen = pg.display.set_mode((402, 402))
         pg.display.set_caption("maze Generator")
         game = Game(screen)
-        game.algorithm = contentCombo
+        game.algorithm = contentCombo    
         game.main_loop()
-        game.output()
+        # game.output()
+        self.w = None
+        self.show_new_window()
+    def show_new_window(self):
+        if self.w is None:
+            self.w = AnotherWindow()
+        self.w.show()
 
 class Root():
     def __init__(self, value, cost, parent = None):
@@ -147,8 +175,8 @@ class Game():
             pg.draw.line(self.canvas, "#ffffff", (i * 20, 0), (i * 20, 400), 2)
             pg.draw.line(self.canvas, "#ffffff", (0, i*20), (400, i*20), 2)
 
-    def setAlgorithm(self):
-        self.algorithm = 'a7a'
+    # def setAlgorithm(self):
+    #     self.algorithm = 'a7a'
 
 
     def drawloop(self):
@@ -170,8 +198,9 @@ class Game():
             self.clock.tick(60)
             for eve in pg.event.get():
                 if eve.type == pg.QUIT:
-                    #self.output()
                     self.running = False
+                    # pg.quit()
+                    # self.output()
                 if eve.type == pg.MOUSEBUTTONDOWN:
                     pos = self.cursor_grid(eve.pos[0], eve.pos[1])
                     if pos != -1:
@@ -382,15 +411,16 @@ class Game():
         outui.setupUi(outputWindow)
         outputWindow.show()
         sys.exit(appout.exec_())
+        # return outputWindow
 
 
 
 
-# # pg.init()
-# # screen = pg.display.set_mode((402, 402))
-# # pg.display.set_caption("maze Generator")
-# # game = Game(screen)
-# # game.main_loop()
+# pg.init()
+# screen = pg.display.set_mode((402, 402))
+# pg.display.set_caption("maze Generator")
+# game = Game(screen)
+# game.main_loop()
 app = QtWidgets.QApplication(sys.argv)
 MainWindow = QtWidgets.QMainWindow()
 ui = Ui_MainWindow()
