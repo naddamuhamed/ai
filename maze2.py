@@ -322,6 +322,8 @@ class Game():
 
         if toStart is False or toEnd is False:
             return
+        print("start= ",start)
+        print("end= ",end)
         toStart = toStart.split("/")
         toEnd = toEnd.split("/")
         i = 0
@@ -341,6 +343,9 @@ class Game():
 
         Game.Path = path
         for ind in path:
+            # pg.time.delay(10)
+            # pg.display.update()
+            # pg.time.Clock().tick(300)
             pg.draw.circle(self.solveCan, "#ffffff", ((int(ind)%20) * 20 + 10, (int(ind)//20) * 20 + 10), 3)
         # for i in range(len(path)-1):
         #     s, e = int(path[i]), int(path[i+1])
@@ -442,6 +447,10 @@ class Game():
                     if r.value==curr:
                         path=path+ f"/{r.value}"
                         children=r.children()
+                        break
+            if endpoint in n[1]:
+                print("cost= ",n[0]) 
+                return path
             cost=n[0]
             # children=c.pop(0)
             for child in children:
@@ -451,7 +460,68 @@ class Game():
                     temp=n[1][:]
                     temp.append(child.value)
                     q.put((cost+child.cost,temp))
-        #self.output(self)
+
+    def GBFS(self,root, endpoint, path):
+        priorityQueue = Q.PriorityQueue()
+        h=self.heuristic(root,endpoint)
+        priorityQueue.put((h, root.value))
+        v=[]
+        v.append(root.value)
+        c=[]
+        children = root.children()
+        c.append(children)
+
+        while priorityQueue.empty() == False:
+
+
+            current = priorityQueue.get()[1]
+
+            for i in c:
+                for r in i:
+                    if r.value==current:
+                        path=path+ f"/{r.value}"
+                        children=r.children()
+                        break
+            # path=path+ f"/{current}"
+            # path.append(current)
+
+            if current == endpoint:
+                # print("goal reached")
+                return path
+                # break
+
+            # priorityQueue = Q.PriorityQueue()
+
+            for child in children:
+                if child.value not in v:
+                    v.append(child.value)
+                    c.append(child.children())
+                    priorityQueue.put((self.heuristic(child,endpoint), child.value))
+    def astar(self,root,endpoint, path):
+        p_q,visited=Q.PriorityQueue(),[]
+        p_q.put((self.heuristic(root,endpoint),0,root.value,[root.value]))
+        visited.append(root.value)
+        c=[]
+        children = root.children()
+        c.append(children)
+        while not p_q.empty():
+            (h,cost,vertex,p)=p_q.get()
+            for i in c:
+                for r in i:
+                    if r.value==vertex:
+                        path=path+ f"/{r.value}"
+                        children=r.children()
+                        break
+            if vertex==endpoint:
+                return path
+                      
+            for child in children:
+                curr=cost+child.cost
+                h=curr+self.heuristic(child,endpoint)
+                if not (child.value in visited ):
+                    visited.append(child.value)
+                    c.append(child.children())
+                    p_q.put((h,curr,child.value,p+[child.value]))
 
     def solve_maze(self):
         if not self.ismaze:
@@ -476,6 +546,9 @@ class Game():
         outputWindow.show()
         sys.exit(appout.exec_())
         # return outputWindow
+
+    def heuristic(self,node,endpoint):
+        return abs(node.value-endpoint)
 
 
 
