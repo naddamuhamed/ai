@@ -1,4 +1,3 @@
-from numpy import exp2
 import pygame as pg
 import random
 import queue as Q
@@ -9,7 +8,6 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QLabel, QVBo
 from random import randint
 import time
 
-# from lab4 import bfs
 class AnotherWindow(QWidget):
     """
     This "window" is a QWidget. If it has no parent, it
@@ -41,7 +39,7 @@ class AnotherWindow(QWidget):
         self.label_2.setFont(font)
         if Game.algorithm=="DFS":
             self.label_2.setObjectName("label_2")
-            self.label_2.setText("Time: "+Game.Time+" Us")
+            self.label_2.setText("Time: "+Game.Time+" µs")
         else:
             self.label_2.setObjectName("label_2")
             self.label_2.setText("Time: "+Game.Time+" Ms")
@@ -304,6 +302,7 @@ class Game():
             Game.Cost = cost
             exp=self.diff(exp1,exp2)
             Game.expnd_nodes = exp
+            
 
         elif Game.algorithm == "BFS":
             t1 = time.time()
@@ -371,6 +370,9 @@ class Game():
         self.solveCan = pg.Surface((402, 402), pg.SRCALPHA)
 
         Game.Path = path
+        print("Expanded nodes: "+str(Game.expnd_nodes))
+        print("Path: "+str(Game.Path))
+        print("Cost: "+str(Game.Cost))
         for ind in path:
             # pg.time.delay(10)
             # pg.display.update()
