@@ -15,7 +15,6 @@ class AnotherWindow(QWidget):
     will appear as a free-floating window as we want.
     """
     def __init__(self):
-        x = "test"
         #app1 = QtWidgets.QApplication(sys.argv)
         super().__init__()
         layout = QVBoxLayout()
@@ -45,7 +44,7 @@ class AnotherWindow(QWidget):
         self.label_3.setGeometry(QtCore.QRect(165, 40, 191, 31))
         self.label_3.setFont(font)
         self.label_3.setObjectName("label_3")
-        self.label_3.setText("Expanded nodes: "+Game.Time)
+        self.label_3.setText("Expanded nodes: "+str(Game.expnd_nodes))
 
         self.button = QPushButton()
         self.button.setGeometry(QtCore.QRect(165, 40, 191, 31))
@@ -205,6 +204,7 @@ class Root():
 
 
 class Game():
+    expnd_nodes = []
     Cost = 0
     Path = []
     Time = 0
@@ -297,6 +297,7 @@ class Game():
             t2 = time.time()
             Game.Time = str((t2-t1)*10000000)
             print(Game.algorithm)
+            Game.expnd_nodes = exp
 
         elif Game.algorithm == "BFS":
             t1 = time.time()
@@ -305,6 +306,7 @@ class Game():
             t2 = time.time()
             Game.Time = str((t2-t1)*1000)
             print(Game.algorithm)
+            Game.expnd_nodes = exp
 
         elif Game.algorithm == "UCS":
             # setup ='''
@@ -321,6 +323,7 @@ class Game():
             Game.Cost = cost
             #Time = Timer(setup, code).timeit()
             print(Game.algorithm)
+            Game.expnd_nodes = exp
 
         elif Game.algorithm == "GBFS":
             print(Game.algorithm)
@@ -329,6 +332,7 @@ class Game():
             toEnd= self.GBFS(self.maze, end, "0")
             t2 = time.time()
             Game.Time = str((t2-t1)*1000)
+            Game.expnd_nodes = exp
 
         elif Game.algorithm == "A*":
             print(Game.algorithm)
@@ -337,6 +341,7 @@ class Game():
             toEnd= self.astar(self.maze, end, "0")
             t2 = time.time()
             Game.Time = str((t2-t1)*1000)
+            Game.expnd_nodes = exp
 
         if toStart is False or toEnd is False:
             return
