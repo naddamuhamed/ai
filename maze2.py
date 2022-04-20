@@ -1,3 +1,4 @@
+from numpy import exp2
 import pygame as pg
 import random
 import queue as Q
@@ -38,8 +39,12 @@ class AnotherWindow(QWidget):
         self.label_2 = QLabel()
         self.label_2.setGeometry(QtCore.QRect(165, 40, 191, 31))
         self.label_2.setFont(font)
-        self.label_2.setObjectName("label_2")
-        self.label_2.setText("Time: "+Game.Time+" Ms")
+        if Game.algorithm=="DFS":
+            self.label_2.setObjectName("label_2")
+            self.label_2.setText("Time: "+Game.Time+" Us")
+        else:
+            self.label_2.setObjectName("label_2")
+            self.label_2.setText("Time: "+Game.Time+" Ms")
         self.label_3 = QLabel()
         self.label_3.setGeometry(QtCore.QRect(165, 40, 191, 31))
         self.label_3.setFont(font)
@@ -168,7 +173,6 @@ class Ui_MainWindow(object):
         # finding the content of current item in combo box
         contentCombo = self.comboBox.currentText()
         # showing content on the screen though label
-        print(contentCombo)
         pg.init()
         screen = pg.display.set_mode((402, 402))
         pg.display.set_caption("maze Generator")
@@ -292,63 +296,65 @@ class Game():
             return
         if Game.algorithm == "DFS":
             t1 = time.time()
-            toStart = self.find_solution(self.maze, start, "0")
-            toEnd = self.find_solution(self.maze, end, "0")
+            toStart,cost1,exp1 = self.dfs(self.maze, start, [0])
+            toEnd,cost2,exp2 = self.dfs(self.maze, end, [0])
             t2 = time.time()
-            Game.Time = str((t2-t1)*10000000)
-            print(Game.algorithm)
+            Game.Time = str((t2-t1)*1000000)
+            cost=abs(cost1-cost2)
+            Game.Cost = cost
+            exp=self.diff(exp1,exp2)
             Game.expnd_nodes = exp
 
         elif Game.algorithm == "BFS":
             t1 = time.time()
-            toStart = self.bfs(self.maze, start, "0")
-            toEnd = self.bfs(self.maze, end, "0")
+            toStart,cost1,exp1 = self.bfs(self.maze, start, [0])
+            toEnd,cost2,exp2 = self.bfs(self.maze, end, [0])
+            cost=abs(cost1-cost2)
+            Game.Cost = cost
             t2 = time.time()
             Game.Time = str((t2-t1)*1000)
-            print(Game.algorithm)
+            exp=self.diff(exp1,exp2)
             Game.expnd_nodes = exp
 
         elif Game.algorithm == "UCS":
-            # setup ='''
-            # '''
-            # code= '''
-            # toStart,cost1 = self.ucs(self.maze, start, "0")
-            # toEnd,cost2 = self.ucs(self.maze, end, "0")'''
             t1 = time.time()
-            toStart,cost1 = self.ucs(self.maze, start, "0")
-            toEnd,cost2 = self.ucs(self.maze, end, "0")
+            toStart,cost1,exp1 = self.ucs(self.maze, start, [0])
+            toEnd,cost2,exp2 = self.ucs(self.maze, end, [0])
             t2 = time.time()
             Game.Time = str((t2-t1)*1000)
             cost=abs(cost1-cost2)
             Game.Cost = cost
-            #Time = Timer(setup, code).timeit()
-            print(Game.algorithm)
+            exp=self.diff(exp1,exp2)
             Game.expnd_nodes = exp
 
         elif Game.algorithm == "GBFS":
-            print(Game.algorithm)
             t1 = time.time()
-            toStart = self.GBFS(self.maze, start, "0")
-            toEnd= self.GBFS(self.maze, end, "0")
+            toStart,cost1,exp1 = self.GBFS(self.maze, start, [0])
+            toEnd,cost2,exp2 = self.GBFS(self.maze, end, [0])
             t2 = time.time()
             Game.Time = str((t2-t1)*1000)
+            cost=abs(cost1-cost2)
+            Game.Cost = cost
+            exp=self.diff(exp1,exp2)
             Game.expnd_nodes = exp
 
         elif Game.algorithm == "A*":
-            print(Game.algorithm)
             t1 = time.time()
-            toStart = self.astar(self.maze, start, "0")
-            toEnd= self.astar(self.maze, end, "0")
+            toStart,cost1,exp1 = self.astar(self.maze, start, [0])
+            toEnd,cost2,exp2 = self.astar(self.maze, end, [0])
             t2 = time.time()
             Game.Time = str((t2-t1)*1000)
+            cost=abs(cost1-cost2)
+            Game.Cost = cost
+            exp=self.diff(exp1,exp2)
             Game.expnd_nodes = exp
 
         if toStart is False or toEnd is False:
             return
         print("start= ",start)
         print("end= ",end)
-        toStart = toStart.split("/")
-        toEnd = toEnd.split("/")
+        # toStart = toStart.split("/")
+        # toEnd = toEnd.split("/")
         i = 0
         while (i < len(toStart) and i < len(toEnd)) and toStart[i] == toEnd[i]:
             i += 1
@@ -370,10 +376,10 @@ class Game():
             # pg.display.update()
             # pg.time.Clock().tick(300)
             pg.draw.circle(self.solveCan, "#ffffff", ((int(ind)%20) * 20 + 10, (int(ind)//20) * 20 + 10), 3)
-        # for i in range(len(path)-1):
-        #     s, e = int(path[i]), int(path[i+1])
-        #     pg.draw.line(self.solveCan, "#ffffff", ((s%20) * 20 + 10, (s//20) * 20 + 10),
-        #                  ((e%20) * 20 + 10, (e//20) * 20 + 10), 1)
+        for i in range(len(path)-1):
+            s, e = int(path[i]), int(path[i+1])
+            pg.draw.line(self.solveCan, "#ffffff", ((s%20) * 20 + 10, (s//20) * 20 + 10),
+                         ((e%20) * 20 + 10, (e//20) * 20 + 10), 1)
 
     def surroundings(self, ind):
         res = []
@@ -386,7 +392,7 @@ class Game():
         return res
 
     def generate_maze(self):
-        self.maze = Root(0,1)
+        self.maze = Root(0,0)
         # self.maze = Root(0)
         # (value, 1,self)
         self.build_tree(0, [], self.maze)
@@ -419,33 +425,56 @@ class Game():
             if result is not False:
                 return result
         return False
-    def bfs(self,root,endpoint,path):
+
+    def dfs(self,root,endpoint,path):
         v=[]
-        q=[]
+        q=[[root.value,0,[root.value]]]
         c=[]
+        p=[]
         v.append(root.value)
-        q.append(root.value)
+        # q.append(root.value)
         children = root.children()
         c.append(children)
         # path + f"/{child.value}"
         while q:
-            # if q[0] is path:
-            #     return v
-            ver=q.pop(0)
-            # if ver == path:
-            #     return v
-            # if ver not in v:
-            #     v.append(ver)
+
+            ver,cost,p=q.pop()
             if ver == endpoint:
-                return path
+                return p,cost,path
+            
+            children=c.pop()
+
+            for child in children:
+                if child.value not in v:
+                    path.append(child.value)
+                    v.append(child.value)
+                    q.append([child.value,cost+child.cost,p+[child.value]])
+                    c.append(child.children())
+                    # break
+
+    def bfs(self,root,endpoint,path):
+        v=[]
+        q=[[root.value,0,[root.value]]]
+        c=[]
+        p=[]
+        v.append(root.value)
+        # q.append(root.value)
+        children = root.children()
+        c.append(children)
+        # path + f"/{child.value}"
+        while q:
+
+            ver,cost,p=q.pop(0)
+            if ver == endpoint:
+                return p,cost,path
             
             children=c.pop(0)
 
             for child in children:
                 if child.value not in v:
-                    path=path+ f"/{child.value}"
+                    path.append(child.value)
                     v.append(child.value)
-                    q.append(child.value)
+                    q.append([child.value,cost+child.cost,p+[child.value]])
                     c.append(child.children())
     def ucs(self,root,endpoint,path):
         q=Q.PriorityQueue()
@@ -462,24 +491,21 @@ class Game():
             
             if endpoint in n[1]:
                 # return n[1],n[0]
-                return path,n[0]
+                return n[1],n[0],path
                 # print("path: "+str(n[1])+" cost: "+str(n[0]))
                 # break
             for i in c:
                 for r in i:
                     if r.value==curr:
-                        path=path+ f"/{r.value}"
                         children=r.children()
                         break
-            if endpoint in n[1]:
-                print("cost= ",n[0]) 
-                return path
             cost=n[0]
             # children=c.pop(0)
             for child in children:
                 if child.value not in v:
                     v.append(child.value)
                     c.append(child.children())
+                    path.append(child.value)
                     temp=n[1][:]
                     temp.append(child.value)
                     q.put((cost+child.cost,temp))
@@ -487,7 +513,7 @@ class Game():
     def GBFS(self,root, endpoint, path):
         priorityQueue = Q.PriorityQueue()
         h=self.heuristic(root,endpoint)
-        priorityQueue.put((h, root.value))
+        priorityQueue.put((h, root.value,0,[root.value]))
         v=[]
         v.append(root.value)
         c=[]
@@ -497,12 +523,11 @@ class Game():
         while priorityQueue.empty() == False:
 
 
-            current = priorityQueue.get()[1]
+            h,current,cost,p = priorityQueue.get()
 
             for i in c:
                 for r in i:
                     if r.value==current:
-                        path=path+ f"/{r.value}"
                         children=r.children()
                         break
             # path=path+ f"/{current}"
@@ -510,7 +535,7 @@ class Game():
 
             if current == endpoint:
                 # print("goal reached")
-                return path
+                return p,cost,path
                 # break
 
             # priorityQueue = Q.PriorityQueue()
@@ -518,9 +543,10 @@ class Game():
             for child in children:
                 if child.value not in v:
                     v.append(child.value)
+                    path.append(child.value)
                     c.append(child.children())
-                    priorityQueue.put((self.heuristic(child,endpoint), child.value))
-                    
+                    priorityQueue.put((self.heuristic(child,endpoint), child.value,cost+child.cost,p+[child.value]))
+
     def astar(self,root,endpoint, path):
         p_q,visited=Q.PriorityQueue(),[]
         p_q.put((self.heuristic(root,endpoint),0,root.value,[root.value]))
@@ -533,11 +559,10 @@ class Game():
             for i in c:
                 for r in i:
                     if r.value==vertex:
-                        path=path+ f"/{r.value}"
                         children=r.children()
                         break
             if vertex==endpoint:
-                return path
+                return p,h,path
                       
             for child in children:
                 curr=cost+child.cost
@@ -545,6 +570,7 @@ class Game():
                 if not (child.value in visited ):
                     visited.append(child.value)
                     c.append(child.children())
+                    path.append(child.value)
                     p_q.put((h,curr,child.value,p+[child.value]))
 
     def solve_maze(self):
@@ -573,6 +599,22 @@ class Game():
 
     def heuristic(self,node,endpoint):
         return abs(node.value-endpoint)
+
+    def diff(self,exp1,exp2):
+        i = 0
+        while (i < len(exp1) and i < len(exp2)) and exp1[i] == exp2[i]:
+            i += 1
+        path = []
+        ii = len(exp1) - 1
+        while ii >= i:
+            path.append(exp1[ii])
+            ii -= 1
+        path.append(exp1[i-1])
+        ii = i
+        while ii < len(exp2):
+            path.append(exp2[ii])
+            ii += 1
+        return path
 
 
 
