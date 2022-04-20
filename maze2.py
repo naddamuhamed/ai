@@ -14,14 +14,10 @@ class AnotherWindow(QWidget):
     will appear as a free-floating window as we want.
     """
     def __init__(self):
-        #app1 = QtWidgets.QApplication(sys.argv)
         super().__init__()
         layout = QVBoxLayout()
         self.resize(600,400)
         self.setStyleSheet("background-color:rgb(181,126,220)")
-        #self.label = QLabel("Another Window % d" % randint(0,100))
-        #self.label_1 = QLabel("Another Window % d" % randint(0,100))
-        # self.label = QtWidgets.QLabel(self.centralwidget)
         self.label = QLabel()
         self.label_1 = QLabel()
         self.label.setGeometry(QtCore.QRect(165, 40, 191, 31))
@@ -42,7 +38,7 @@ class AnotherWindow(QWidget):
             self.label_2.setText("Time: "+Game.Time+" µs")
         else:
             self.label_2.setObjectName("label_2")
-            self.label_2.setText("Time: "+Game.Time+" Ms")
+            self.label_2.setText("Time: "+Game.Time+" ms")
         self.label_3 = QLabel()
         self.label_3.setGeometry(QtCore.QRect(165, 40, 191, 31))
         self.label_3.setFont(font)
@@ -55,21 +51,11 @@ class AnotherWindow(QWidget):
         self.button.setText("Quit")
         self.button.setStyleSheet("background-color:rgb(116,77,169)")
         self.button.pressed.connect(self.exit)
-        # self.label_1.move(60,-20)
-        # self.box = QTextBrowser(self)
-        # self.box.setText(str(Game.Path))
-        # self.textbox = QLineEdit(self)
-        # self.textbox.move(20, 20)
-        # self.textbox.resize(400,280)
-        # self.textbox.setText(str(Game.Path))
-        # self.box.setWordWrapMode(True)
-        # self.box.setLineWrapMode(True)
         layout.addWidget(self.label)
         layout.addWidget(self.label_1)
         layout.addWidget(self.label_2)
         layout.addWidget(self.label_3)
         layout.addWidget(self.button)
-        # layout.addWidget(self.box)
         self.setLayout(layout)
     def exit(self):
         sys.exit()
@@ -146,7 +132,6 @@ class Ui_MainWindow(object):
         self.button.setObjectName("button")
         self.button.pressed.connect(self.find)
         self.button.setStyleSheet("background-color:rgb(116,77,169)")
-        #self.button.setStyleSheet("background-color:purple")
 
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
@@ -187,7 +172,6 @@ class Ui_MainWindow(object):
 
 class Root():
     def __init__(self, value, cost, parent = None):
-    # def __init__(self, value, parent = None):
         self.value = value
         self.child = []
         self.parent = parent
@@ -195,7 +179,6 @@ class Root():
 
     def addChild(self, value):
         self.child.append(Root(value, 1,self))
-        # self.child.append(Root(value,self))
         return self.child[-1]
 
     def children(self):
@@ -252,7 +235,6 @@ class Game():
                 if eve.type == pg.QUIT:
                     self.running = False
                     # pg.quit()
-                    # self.output()
                 if eve.type == pg.MOUSEBUTTONDOWN:
                     pos = self.cursor_grid(eve.pos[0], eve.pos[1])
                     if pos != -1:
@@ -351,8 +333,6 @@ class Game():
         if toStart is False or toEnd is False:
             return
         
-        # toStart = toStart.split("/")
-        # toEnd = toEnd.split("/")
         i = 0
         while (i < len(toStart) and i < len(toEnd)) and toStart[i] == toEnd[i]:
             i += 1
@@ -375,10 +355,12 @@ class Game():
         print("Expanded nodes: "+str(Game.expnd_nodes))
         print("Path: "+str(Game.Path))
         print("Cost: "+str(Game.Cost))
+        if Game.algorithm=="DFS":
+            print("Time: "+Game.Time+" µs")
+        else:
+            print("Time: "+Game.Time+" ms")
+            
         for ind in path:
-            # pg.time.delay(10)
-            # pg.display.update()
-            # pg.time.Clock().tick(300)
             pg.draw.circle(self.solveCan, "#ffffff", ((int(ind)%20) * 20 + 10, (int(ind)//20) * 20 + 10), 3)
         for i in range(len(path)-1):
             s, e = int(path[i]), int(path[i+1])
@@ -397,8 +379,6 @@ class Game():
 
     def generate_maze(self):
         self.maze = Root(0,0)
-        # self.maze = Root(0)
-        # (value, 1,self)
         self.build_tree(0, [], self.maze)
 
     def build_tree(self, parent, closed, parentTree):
@@ -416,7 +396,6 @@ class Game():
                     pg.draw.line(self.canvas, "#000000", (col * 20 + 2, (row + 1 * (child > parent)) * 20),
                                  ((col + 1) * 20 - 1, (row + 1 * (child > parent)) * 20), 2)
                 self.drawloop()
-                #pg.time.delay(10)
                 childTree = parentTree.addChild(child)
                 self.build_tree(child, closed, childTree)
 
@@ -436,10 +415,8 @@ class Game():
         c=[]
         p=[]
         v.append(root.value)
-        # q.append(root.value)
         children = root.children()
         c.append(children)
-        # path + f"/{child.value}"
         while q:
 
             ver,cost,p=q.pop()
@@ -454,7 +431,6 @@ class Game():
                     v.append(child.value)
                     q.append([child.value,cost+child.cost,p+[child.value]])
                     c.append(child.children())
-                    # break
 
     def bfs(self,root,endpoint,path):
         v=[]
@@ -462,10 +438,8 @@ class Game():
         c=[]
         p=[]
         v.append(root.value)
-        # q.append(root.value)
         children = root.children()
         c.append(children)
-        # path + f"/{child.value}"
         while q:
 
             ver,cost,p=q.pop(0)
@@ -494,17 +468,15 @@ class Game():
             
             
             if endpoint in n[1]:
-                # return n[1],n[0]
                 return n[1],n[0],path
-                # print("path: "+str(n[1])+" cost: "+str(n[0]))
-                # break
+
             for i in c:
                 for r in i:
                     if r.value==curr:
                         children=r.children()
                         break
             cost=n[0]
-            # children=c.pop(0)
+
             for child in children:
                 if child.value not in v:
                     v.append(child.value)
@@ -526,7 +498,6 @@ class Game():
 
         while priorityQueue.empty() == False:
 
-
             h,current,cost,p = priorityQueue.get()
 
             for i in c:
@@ -534,15 +505,10 @@ class Game():
                     if r.value==current:
                         children=r.children()
                         break
-            # path=path+ f"/{current}"
-            # path.append(current)
+
 
             if current == endpoint:
-                # print("goal reached")
                 return p,cost,path
-                # break
-
-            # priorityQueue = Q.PriorityQueue()
 
             for child in children:
                 if child.value not in v:
@@ -599,7 +565,6 @@ class Game():
         outui.setupUi(outputWindow)
         outputWindow.show()
         sys.exit(appout.exec_())
-        # return outputWindow
 
     def heuristic(self,node,endpoint):
         return abs(node.value-endpoint)
@@ -623,11 +588,7 @@ class Game():
 
 
 
-# pg.init()
-# screen = pg.display.set_mode((402, 402))
-# pg.display.set_caption("maze Generator")
-# game = Game(screen)
-# game.main_loop()
+
 app = QtWidgets.QApplication(sys.argv)
 MainWindow = QtWidgets.QMainWindow()
 ui = Ui_MainWindow()
@@ -635,10 +596,3 @@ ui.setupUi(MainWindow)
 MainWindow.show()
 sys.exit(app.exec_())
 
-
-# appout = QtWidgets.QApplication(sys.argv)
-# outputWindow = QtWidgets.QMainWindow()
-# outui = Ui_OutWindow()
-# outui.setupUi(outputWindow)
-# outputWindow.show()
-# sys.exit(appout.exec_())
