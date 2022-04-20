@@ -350,8 +350,7 @@ class Game():
 
         if toStart is False or toEnd is False:
             return
-        print("start= ",start)
-        print("end= ",end)
+        
         # toStart = toStart.split("/")
         # toEnd = toEnd.split("/")
         i = 0
@@ -370,6 +369,9 @@ class Game():
         self.solveCan = pg.Surface((402, 402), pg.SRCALPHA)
 
         Game.Path = path
+        print("Algorithm: "+Game.algorithm)
+        print("start= ",start)
+        print("end= ",end)
         print("Expanded nodes: "+str(Game.expnd_nodes))
         print("Path: "+str(Game.Path))
         print("Cost: "+str(Game.Cost))
