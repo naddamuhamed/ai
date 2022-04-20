@@ -1,0 +1,6 @@
+1-After running the program select your desired algorithm and press the "Start" button
+2-Use left click to insert the start and right click to insert the goal on the generated maze
+3-Use enter to find the path using the selected algorithm or space to generate a different maze
+	-Different points can be used after the path generation(refer to step 2)
+4-Press the 'X' button in the top right to show the path, cost, time, and expanded nodes of the chosen algorithm with the selected points
+5-Press the "Quit" button to end the program
